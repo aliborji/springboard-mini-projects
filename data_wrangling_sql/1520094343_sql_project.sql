@@ -54,14 +54,19 @@ SELECT `name`, `monthlymaintenance`, IF(100<`monthlymaintenance`, "expensive", "
 
 /* Q6: You'd like to get the first and last name of the last member(s)
 who signed up. Do not use the LIMIT clause for your solution. */
-
+SELECT `firstname`, `surname` FROM `Members` WHERE `joindate` = (SELECT max(`joindate`) FROM `Members`)
 
 
 /* Q7: How can you produce a list of all members who have used a tennis court?
 Include in your output the name of the court, and the name of the member
 formatted as a single column. Ensure no duplicate data, and order by
 the member name. */
-
+SELECT DISTINCT(CONCAT(f.`name`, m.`firstname`)) as result 
+FROM  `Members` m
+INNER JOIN  `Bookings` b ON b.`memid` = m.`memid` 
+INNER JOIN  `Facilities` f ON f.`facid` = b.`facid` 
+WHERE f.`name` LIKE  '%Tennis Court%'
+ORDER BY m.`firstname` 
 
 
 /* Q8: How can you produce a list of bookings on the day of 2012-09-14 which
