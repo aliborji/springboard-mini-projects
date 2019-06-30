@@ -97,3 +97,8 @@ ORDER BY c.`cost` DESC
 /* Q10: Produce a list of facilities with a total revenue less than 1000.
 The output of facility name and total revenue, sorted by revenue. Remember
 that there's a different cost for guests and members! */
+SELECT f.`name`, SUM(IF(b.`memid`=0, b.`slots` * f.`guestcost`, b.`slots` * f.`membercost`)) as revenue 
+FROM `Bookings` b
+INNER JOIN `Facilities` f ON f.`facid` = b.`facid`
+GROUP BY f.`name`
+ORDER BY revenue
