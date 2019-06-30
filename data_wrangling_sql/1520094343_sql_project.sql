@@ -84,6 +84,14 @@ ORDER BY cost DESC
 
 
 /* Q9: This time, produce the same result as in Q8, but using a subquery. */
+SELECT CONCAT(c.`name`, m.`firstname`) as result, c.`cost`
+FROM (SELECT b.`memid`, f.`name`, IF(b.`memid`=0, b.`slots` * f.`guestcost`, b.`slots` * f.`membercost`) as cost
+	FROM `Bookings` b
+	INNER JOIN `Facilities` f ON f.`facid` = b.`facid`
+    WHERE b.`starttime` LIKE '2012-09-14%' ) c
+INNER JOIN `Members` m ON m.`memid` = c.`memid`
+WHERE c.`cost` > 30
+ORDER BY c.`cost` DESC
 
 
 /* Q10: Produce a list of facilities with a total revenue less than 1000.
